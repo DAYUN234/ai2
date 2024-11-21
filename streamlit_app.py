@@ -39,22 +39,7 @@ if uploaded_file is not None:
     st.image(image, caption="업로드된 이미지", use_column_width=True)
 
     # Fastai에서 예측을 위해 이미지를 처리
-    img = PILImage.create(uploaded_file)
-
-    # 예측 수행
-    prediction, _, probs = learner.predict(img)
-
-    # 결과 출력
-    st.write(f"예측된 클래스: {prediction}")
-
-
-    # 클래스별 확률을 HTML과 CSS로 시각화
-    st.markdown("<h3>클래스별 확률:</h3>", unsafe_allow_html=True)
-
-    if prediction == labels[0]:
-         st.write("아사히")
-     elif prediction == labels[1]:
-         st.write("요")
+    i시")
      elif prediction == labels[2]:
          st.write("윤재혁")
 
