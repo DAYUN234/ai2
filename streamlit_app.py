@@ -1,6 +1,5 @@
-#분류 결과 + 이미지 + 영상 + 텍스트 보여주기
+#분류 결과 + 이미지 + 텍스트와 함께 분류 결과에 따라 다른 출력 보여주기
 #파일 이름 streamlit_app.py
-
 import streamlit as st
 from fastai.vision.all import *
 from PIL import Image
@@ -8,6 +7,7 @@ import gdown
 
 # Google Drive 파일 ID
 file_id = '1-3527evdDHUouOh5qyepdjH01bMi2m2w'
+
 # Google Drive에서 파일 다운로드 함수
 @st.cache(allow_output_mutation=True)
 def load_model_from_drive(file_id):
@@ -19,7 +19,7 @@ def load_model_from_drive(file_id):
     learner = load_learner(output)
     return learner
 
-def https://www.youtube.com/watch?v=1yMzV0NdB9g(image, prediction, probs, labels):
+def display_left_content(image, prediction, probs, labels):
     st.write("### 왼쪽: 기존 출력 결과")
     if image is not None:
         st.image(image, caption="업로드된 이미지", use_column_width=True)
@@ -36,35 +36,20 @@ def https://www.youtube.com/watch?v=1yMzV0NdB9g(image, prediction, probs, labels
                 </div>
         """, unsafe_allow_html=True)
 
-def display_right_content(labels):
+def display_right_content(prediction, data):
     st.write("### 오른쪽: 동적 분류 결과")
     cols = st.columns(3)
 
-    # 1st Row - Images based on labels
-    for i, label in enumerate(labels[:3]):
-        with cols[i]:
-            st.image(f"https://i.ibb.co/g7CPZ8X/wlq.jpg?text={label}", caption=f"이미지: {label}", use_column_width=True)
-
-    # 2nd Row - YouTube Videos based on labels
-    for i, label in enumerate(labels[:3]):
-        with cols[i]:
-            st.video("https://www.youtube.com/watch?v=3JZ_D3ELwOQ", start_time=0)
-            st.caption(f"유튜브: {label}")
-
-    # 3rd Row - Text based on labels
-    for i, label in enumerate(labels[:3]):
-        with cols[i]:
-            st.write(f"{label} 관련 텍스트 내용입니다.")
-
-# 모델 로드
-st.write("모델을 로드 중입니다. 잠시만 기다려주세요...")
-learner = load_model_from_drive(file_id)
-st.success("모델이 성공적으로 로드되었습니다!")
-
-labels = learner.dls.vocab
+    # 1st Row - Images
+    for혁",
+            "Label 3 관련 두 번째 텍스트 내용입니다.",
+            "Label 3 관련 세 번째 텍스트 내용입니다."
+        ]
+    }
+}
 
 # 레이아웃 설정
-left_column, right_column = st.columns(2)
+left_column, right_column = st.columns([1, 2])  # 왼쪽과 오른쪽의 비율 조정
 
 # 파일 업로드 컴포넌트 (jpg, png, jpeg, webp, tiff 지원)
 uploaded_file = st.file_uploader("이미지를 업로드하세요", type=["jpg", "png", "jpeg", "webp", "tiff"])
@@ -78,4 +63,11 @@ if uploaded_file is not None:
         display_left_content(image, prediction, probs, labels)
 
     with right_column:
-        display_right_content(labels)
+        # 분류 결과에 따른 콘텐츠 선택
+        data = content_data.get(prediction, {
+            'images': ["https://via.placeholder.com/300"] * 3,
+            'videos': ["https://www.youtube.com/watch?v=3JZ_D3ELwOQ"] * 3,
+            'texts': ["기본 텍스트"] * 3
+        })
+        display_right_content(prediction, data)
+
