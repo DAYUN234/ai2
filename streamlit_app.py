@@ -19,7 +19,7 @@ def load_model_from_drive(file_id):
     learner = load_learner(output)
     return learner
 
-def display_left_content(image, prediction, probs, labels):
+def https://www.youtube.com/watch?v=1yMzV0NdB9g(image, prediction, probs, labels):
     st.write("### 왼쪽: 기존 출력 결과")
     if image is not None:
         st.image(image, caption="업로드된 이미지", use_column_width=True)
